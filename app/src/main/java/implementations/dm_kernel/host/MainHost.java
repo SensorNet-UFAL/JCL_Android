@@ -143,7 +143,7 @@ public class MainHost extends Server {
         this.results = new ConcurrentHashMap<Long, JCL_result>();
         this.JclHashMap = new ConcurrentHashMap<String, Set<Object>>();
         this.taskID = new AtomicLong();
-        this.jcl = (JCL_FacadeImpl)JCL_FacadeImpl.Holder.getInstancePacu(rp);
+        this.jcl = (JCL_FacadeImpl) JCL_FacadeImpl.Holder.getInstancePacu(rp);
 
         this.registerMsg = new AtomicInteger();
         JCL_handler.setRegisterMsg(registerMsg);
@@ -232,8 +232,8 @@ public class MainHost extends Server {
     public <K extends JCL_handler> GenericConsumer<K> createSocketConsumer(
             GenericResource<K> r, AtomicBoolean kill) {
         // TODO Auto-generated method stub
-        String hostID = this.metaData.get("MAC")+this.metaData.get("PORT");
-        return new SocketConsumer<K>(r,kill,TaskContain,hostID,results,this.taskID,this.JclHashMap,this.rp,this.JCLTaskMap,this.jcl);
+        String hostID = this.metaData.get("MAC") + this.metaData.get("PORT");
+        return new SocketConsumer<K>(r, kill, TaskContain, hostID, results, this.taskID, this.JclHashMap, this.rp, this.JCLTaskMap, this.jcl);
     }
 
     private void ShutDownHook() {
@@ -247,6 +247,20 @@ public class MainHost extends Server {
         });
     }
 
+    private static JCL_connector noDuplicateUnregister(String[] info) {
+        JCL_message_metadata msg = new MessageMetadataImpl();
+        msg.setType(-2);
+        msg.setMetadados(metaData);
+        JCL_connector controlConnector = new ConnectorImpl(false);
+        controlConnector.connect(info[1], Integer.parseInt(info[2]), null);
+        JCL_message_control msgr = (JCL_message_control) controlConnector.sendReceiveG(msg, null);
+        if (msgr.getRegisterData().length == 1) {
+            System.out.println("HOST JCL WAS UNREGISTERED!");
+        } else System.err.println("HOST JCL WAS NOT UNREGISTERED!");
+        JCL_FacadeImpl.getInstance().destroy();
+        return controlConnector;
+    }
+
     public static void unRegister(final String[] info) {
 //        JCL_FacadeImpl.getInstance().destroy();
 //        JCL_orbImpl.getInstance().cleanEnvironment();
@@ -256,17 +270,7 @@ public class MainHost extends Server {
             @Override
             public void run() {
                 try {
-                    JCL_ANDROID_Facade jcl = JCL_ANDROID_Facade.getInstance();
-                    JCL_message_metadata msg = new MessageMetadataImpl();
-                    msg.setType(-2);
-                    msg.setMetadados(metaData);
-                    JCL_connector controlConnector = new ConnectorImpl(false);
-                    controlConnector.connect(info[1], Integer.parseInt(info[2]), null);
-                    JCL_message_control msgr = (JCL_message_control) controlConnector.sendReceiveG(msg,null);
-                    if (msgr.getRegisterData().length == 1) {
-                        System.out.println("HOST JCL WAS UNREGISTERED!");
-                    } else System.err.println("HOST JCL WAS NOT UNREGISTERED!");
-                    JCL_FacadeImpl.getInstance().destroy();
+                    JCL_connector controlConnector = noDuplicateUnregister(info);
                     implementations.dm_kernel.user.JCL_FacadeImpl.getInstance().destroy();
                     JCL_orbImpl.getInstance().cleanEnvironment();
                     JCL_orbImpl.getInstancePacu().cleanEnvironment();
@@ -280,13 +284,13 @@ public class MainHost extends Server {
                     JCL_orbImpl.getInstancePacu().cleanEnvironment();
 
                     System.err.println("Erro in unregister host!");
-                    try{
+                    try {
                         JCL_connector controlConnector = new ConnectorImpl(false);
                         controlConnector.disconnect();
                         ConnectorImpl.closeSocketMap();
                         MainHost.closeServer();
-                    }catch (Exception e1){
-                    }finally {
+                    } catch (Exception e1) {
+                    } finally {
                         JCL_FacadeImpl.getInstance().destroy();
                         implementations.dm_kernel.user.JCL_FacadeImpl.getInstance().destroy();
                         JCL_orbImpl.getInstance().cleanEnvironment();
@@ -304,17 +308,7 @@ public class MainHost extends Server {
 
 
         try {
-            JCL_ANDROID_Facade jcl = JCL_ANDROID_Facade.getInstance();
-            JCL_message_metadata msg = new MessageMetadataImpl();
-            msg.setType(-2);
-            msg.setMetadados(metaData);
-            JCL_connector controlConnector = new ConnectorImpl(false);
-            controlConnector.connect(info[1], Integer.parseInt(info[2]), null);
-            JCL_message_control msgr = (JCL_message_control) controlConnector.sendReceiveG(msg,null);
-            if (msgr.getRegisterData().length == 1) {
-                System.out.println("HOST JCL WAS UNREGISTERED!");
-            } else System.err.println("HOST JCL WAS NOT UNREGISTERED!");
-            JCL_FacadeImpl.getInstance().destroy();
+            JCL_connector controlConnector = noDuplicateUnregister(info);
             controlConnector.disconnect();
             ConnectorImpl.closeSocketMap();
             MainHost.closeServer();
@@ -326,7 +320,7 @@ public class MainHost extends Server {
     }
 
     public static void closeServer() {
-        if (main!=null) {
+        if (main != null) {
             main.getServerR().stopServer();
             main.getServerR().setFinished();
             main.closeSocket();

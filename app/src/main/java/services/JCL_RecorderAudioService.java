@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import br.ufal.laccan.NoDuplicate;
 import com.hpc.jcl_android.JCL_ANDROID_Facade;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -51,7 +52,7 @@ public class JCL_RecorderAudioService extends Service implements Runnable, JCL_A
         mqttClient = jcl.getMqttClient();
         try {
             jcl_RecorderAudio2 = new JCL_RecorderAudio2();
-            JCL_FacadeImpl.getInstance().instantiateGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id +"_NUMELEMENTS", "0");
+            JCL_FacadeImpl.getInstance().instantiateGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id + "_NUMELEMENTS", "0");
             JCLHashMap<Integer, interfaces.kernel.JCL_Sensor> values = new JCLHashMap<Integer, interfaces.kernel.JCL_Sensor>(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id + "_value");
             int min = 0, max = 0;
             while (isWorking) {
@@ -70,17 +71,18 @@ public class JCL_RecorderAudioService extends Service implements Runnable, JCL_A
                     s.setDataType("3gp");
                     //s.showData();
                     //int key = values.keySet().str
-                    if (!JCL_FacadeImpl.getInstance().containsGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id +"_NUMELEMENTS")){
-                        max = 0;
-                        min = 0;
-                        values = new JCLHashMap<Integer, interfaces.kernel.JCL_Sensor>(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id + "_value");
-                        JCL_FacadeImpl.getInstance().instantiateGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id +"_NUMELEMENTS", "0");
-                    }
-                    if ((max-min)>jcl.getSize().get(JCL_Sensor.TypeSensor.TYPE_AUDIO.id)){
-                        values.remove(min++);
-                    }
-                    values.put(max, s);
-                    JCL_FacadeImpl.getInstance().setValueUnlocking(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id +"_NUMELEMENTS", max++);
+                    NoDuplicate.runAux(max, min, values, jcl, s);
+//                    if (!JCL_FacadeImpl.getInstance().containsGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id + "_NUMELEMENTS")) {
+//                        max = 0;
+//                        min = 0;
+//                        values = new JCLHashMap<Integer, interfaces.kernel.JCL_Sensor>(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id + "_value");
+//                        JCL_FacadeImpl.getInstance().instantiateGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id + "_NUMELEMENTS", "0");
+//                    }
+//                    if ((max - min) > jcl.getSize().get(JCL_Sensor.TypeSensor.TYPE_AUDIO.id)) {
+//                        values.remove(min++);
+//                    }
+//                    values.put(max, s);
+                    JCL_FacadeImpl.getInstance().setValueUnlocking(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_AUDIO.id + "_NUMELEMENTS", max++);
 
 
                     try {
@@ -109,16 +111,16 @@ public class JCL_RecorderAudioService extends Service implements Runnable, JCL_A
     @Override
     public MessageSensorImpl getSensorNow(long length) {
         JCL_ANDROID_Facade jcl = JCL_ANDROID_Facade.getInstance();
-        long d0=0;
-        if (length==0)
-            d0= jcl.getTimeRecorder() == 0 ? 1 : jcl.getTimeRecorder();
+        long d0 = 0;
+        if (length == 0)
+            d0 = jcl.getTimeRecorder() == 0 ? 1 : jcl.getTimeRecorder();
         else
-            d0=length;
+            d0 = length;
 
         d0 *= 1000;
-        Log.e("au","vai gravar");
+        Log.e("au", "vai gravar");
         byte[] audio = jcl_RecorderAudio2.recorderAudio(d0 + 1000);
-        Log.e("au","vai gravou");
+        Log.e("au", "vai gravou");
         JCL_Sensor jcl_SensorFile = new JCL_Sensor(JCL_Sensor.TypeSensor.TYPE_AUDIO, audio, "3gp");
         return jcl_SensorFile.convertToMessage_sensor();
     }
