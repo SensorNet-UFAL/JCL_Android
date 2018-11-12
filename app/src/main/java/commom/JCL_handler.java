@@ -254,11 +254,6 @@ public class JCL_handler implements Runnable{
         String[] macAddressParts = macAddress.split("-");
         byte[] macAddressBytes = new byte[6];
 
-        macConvertDuplicate(macAddress, macAddressParts, macAddressBytes);
-        return macAddressBytes;
-    }
-
-    public static void macConvertDuplicate(String macAddress, String[] macAddressParts, byte[] macAddressBytes) {
         if (macAddressParts.length == 6){
             // convert hex string to byte values
             for(int i=0; i<6; i++){
@@ -276,6 +271,7 @@ public class JCL_handler implements Runnable{
             macAddressBytes[4] =  integer.byteValue();
             macAddressBytes[5] =  integer.byteValue();
         }
+        return macAddressBytes;
     }
 
     public String getMacS() {

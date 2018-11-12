@@ -1,7 +1,10 @@
 package implementations.sm_kernel;
 
 import android.util.Log;
+
+
 import com.google.common.primitives.Primitives;
+
 import interfaces.kernel.JCL_orb;
 import interfaces.kernel.JCL_result;
 import interfaces.kernel.JCL_task;
@@ -22,6 +25,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import commom.JCL_resultImpl;
 
 public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
 
@@ -47,39 +52,35 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
         gvClasses = new HashMap<>();
     }
 
-    private void duplicateExecute(JCL_task task, int para) {
-        T jResult = results.get(task.getTaskID());
-        Object instance = cache1.get(task.getObjectName());
-        if (task.getMethodParameters() == null)
-            para = 0;
-        else
-            para = task.getMethodParameters().length;
-
-        //int type = cache2.get(task.getObjectName() + ":" + task.getObjectMethod() + ":" + para);
-        task.setTaskTime(System.nanoTime());
-        Object result = null;//instance.JCLExecPacu(type, task.getMethodParameters());
-        task.setTaskTime(System.nanoTime());
-
-        jResult.setTime(task.getTaskTime());
-
-        if (result != null) {
-            jResult.setCorrectResult(result);
-        } else {
-            jResult.setCorrectResult("no result");
-        }
-
-        synchronized (jResult) {
-            jResult.notifyAll();
-        }
-    }
-
     //@Override
     public void execute2(JCL_task task, Map<Long, T> results) {
         try {
-            int para = 0;
+            int para;
 
             if (nameMap.containsKey(task.getObjectName())) {
-                duplicateExecute(task, para);
+                T jResult = results.get(task.getTaskID());
+                Object instance = cache1.get(task.getObjectName());
+                if (task.getMethodParameters() == null)
+                    para = 0;
+                else
+                    para = task.getMethodParameters().length;
+
+                //int type = cache2.get(task.getObjectName() + ":" + task.getObjectMethod() + ":" + para);
+                task.setTaskTime(System.nanoTime());
+                Object result =  null;//instance.JCLExecPacu(type, task.getMethodParameters());
+                task.setTaskTime(System.nanoTime());
+
+                jResult.setTime(task.getTaskTime());
+
+                if (result != null) {
+                    jResult.setCorrectResult(result);
+                } else {
+                    jResult.setCorrectResult("no result");
+                }
+
+                synchronized (jResult) {
+                    jResult.notifyAll();
+                }
 
             } else {
                 Long ini = System.currentTimeMillis();
@@ -87,46 +88,46 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
 
                 while ((System.currentTimeMillis() - ini) < timeOut) {
                     if (nameMap.containsKey(task.getObjectName())) {
-                        duplicateExecute(task, para);
-//                        T jResult = results.get(task.getTaskID());
-//                        Object instance = cache1.get(task.getObjectName());
-//                        if (task.getMethodParameters() == null)
-//                            para = 0;
-//                        else
-//                            para = task.getMethodParameters().length;
-//                        //int type = cache2.get(task.getObjectName() + ":" + task.getObjectMethod() + ":" + para);
-//
-//                        task.setTaskTime(System.nanoTime());
-//                        Object result = null;//instance.JCLExecPacu(type, task.getMethodParameters());
-//                        task.setTaskTime(System.nanoTime());
-//
-//                        jResult.setTime(task.getTaskTime());
-//
-//                        if (result != null) {
-//                            jResult.setCorrectResult(result);
-//                        } else {
-//                            jResult.setCorrectResult("no result");
-//                        }
-//
-//                        synchronized (jResult) {
-//                            jResult.notifyAll();
-//                        }
+
+                        T jResult = results.get(task.getTaskID());
+                        Object instance = cache1.get(task.getObjectName());
+                        if (task.getMethodParameters() == null)
+                            para = 0;
+                        else
+                            para = task.getMethodParameters().length;
+                        //int type = cache2.get(task.getObjectName() + ":" + task.getObjectMethod() + ":" + para);
+
+                        task.setTaskTime(System.nanoTime());
+                        Object result = null;//instance.JCLExecPacu(type, task.getMethodParameters());
+                        task.setTaskTime(System.nanoTime());
+
+                        jResult.setTime(task.getTaskTime());
+
+                        if (result != null) {
+                            jResult.setCorrectResult(result);
+                        } else {
+                            jResult.setCorrectResult("no result");
+                        }
+
+                        synchronized (jResult) {
+                            jResult.notifyAll();
+                        }
 
                         ok = false;
                         break;
-                        /*
-                         * T jResult = results.get(task.getTaskID()); if
-                         * (task.getMethodParameters() == null) para = 0; else
-                         * para=task.getMethodParameters().length; Method m =
-                         * cache2.get(task.getObjectName()+":"+task.
-                         * getObjectMethod()+":"+para); Object instance =
-                         * cache1.get(task.getObjectName()); Object result =
-                         * m.invoke(instance, task.getMethodParameters());
-                         * if(result!=null){ jResult.setCorrectResult(result);
-                         * }else{ jResult.setCorrectResult("no result"); }
-                         *
-                         * synchronized (jResult){ jResult.notifyAll(); } break;
-                         */
+						/*
+						 * T jResult = results.get(task.getTaskID()); if
+						 * (task.getMethodParameters() == null) para = 0; else
+						 * para=task.getMethodParameters().length; Method m =
+						 * cache2.get(task.getObjectName()+":"+task.
+						 * getObjectMethod()+":"+para); Object instance =
+						 * cache1.get(task.getObjectName()); Object result =
+						 * m.invoke(instance, task.getMethodParameters());
+						 * if(result!=null){ jResult.setCorrectResult(result);
+						 * }else{ jResult.setCorrectResult("no result"); }
+						 *
+						 * synchronized (jResult){ jResult.notifyAll(); } break;
+						 */
                     }
                 }
                 if (((System.currentTimeMillis() - ini) > timeOut) && (ok)) {
@@ -178,29 +179,24 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
         }
     }
 
-    private Object noDuplicateExecute(JCL_task task, int para, T jResult) {
-        Object instance = cache1.get(task.getObjectName());
-        if (task.getMethodParameters() == null)
-            para = 0;
-        else
-            para = task.getMethodParameters().length;
-
-        task.setTaskTime(System.nanoTime());
-        Object result = intercept(getMethodNumber(instance, task.getObjectMethod(), para), task.getMethodParameters(), instance);//instance.JCLExecPacu(getMethodNumber(instance, task.getObjectMethod(), para) + "", task.getMethodParameters(), instance);
-        task.setTaskTime(System.nanoTime());
-
-        jResult.setTime(task.getTaskTime());
-        return result;
-    }
-
     @Override
     public void execute(JCL_task task) {
         try {
-            int para = 0;
+            int para;
 
             if (nameMap.containsKey(task.getObjectName())) {
                 T jResult = results.get(task.getTaskID());
-                Object result = noDuplicateExecute(task, para, jResult);
+                Object instance = cache1.get(task.getObjectName());
+                if (task.getMethodParameters() == null)
+                    para = 0;
+                else
+                    para = task.getMethodParameters().length;
+
+                task.setTaskTime(System.nanoTime());
+                Object result =  intercept(getMethodNumber(instance, task.getObjectMethod(), para), task.getMethodParameters(), instance);//instance.JCLExecPacu(getMethodNumber(instance, task.getObjectMethod(), para) + "", task.getMethodParameters(), instance);
+                task.setTaskTime(System.nanoTime());
+
+                jResult.setTime(task.getTaskTime());
                 jResult.setMemorysize(0);
 
                 if (result != null) {
@@ -221,7 +217,18 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
                     if (nameMap.containsKey(task.getObjectName())) {
 
                         T jResult = results.get(task.getTaskID());
-                        Object result = noDuplicateExecute(task, para, jResult);
+                        Object instance = cache1.get(task.getObjectName());
+                        if (task.getMethodParameters() == null)
+                            para = 0;
+                        else
+                            para = task.getMethodParameters().length;
+
+                        task.setTaskTime(System.nanoTime());
+                        Object result = intercept(getMethodNumber(instance, task.getObjectMethod(), para), task.getMethodParameters(), instance); // instance.JCLExecPacu();
+                        task.setTaskTime(System.nanoTime());
+
+                        jResult.setTime(task.getTaskTime());
+
                         if (result != null) {
                             jResult.setCorrectResult(result);
                         } else {
@@ -236,17 +243,17 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
                         break;
                         /*
                          * T jResult = results.get(task.getTaskID()); if
-                         * (task.getMethodParameters() == null) para = 0; else
-                         * para=task.getMethodParameters().length; Method m =
-                         * cache2.get(task.getObjectName()+":"+task.
-                         * getObjectMethod()+":"+para); Object instance =
-                         * cache1.get(task.getObjectName()); Object result =
-                         * m.invoke(instance, task.getMethodParameters());
-                         * if(result!=null){ jResult.setCorrectResult(result);
-                         * }else{ jResult.setCorrectResult("no result"); }
-                         *
-                         * synchronized (jResult){ jResult.notifyAll(); } break;
-                         */
+						 * (task.getMethodParameters() == null) para = 0; else
+						 * para=task.getMethodParameters().length; Method m =
+						 * cache2.get(task.getObjectName()+":"+task.
+						 * getObjectMethod()+":"+para); Object instance =
+						 * cache1.get(task.getObjectName()); Object result =
+						 * m.invoke(instance, task.getMethodParameters());
+						 * if(result!=null){ jResult.setCorrectResult(result);
+						 * }else{ jResult.setCorrectResult("no result"); }
+						 *
+						 * synchronized (jResult){ jResult.notifyAll(); } break;
+						 */
                     }
                 }
                 if (((System.currentTimeMillis() - ini) > timeOut) && (ok)) {
@@ -310,14 +317,16 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
     }
 
 
+
+
     @Override
     public synchronized boolean register(Class<?> serviceClass, String nickName) {
         try {
             //if (nameMap.containsKey(nickName)) {
-            //return false;
+                //return false;
             //} else {
-            //nameMet.put(nickName, new ConcurrentHashMap<Integer, String>());
-            //tyPeMet.put(nickName, new ConcurrentHashMap<String, Class<?>>());
+                //nameMet.put(nickName, new ConcurrentHashMap<Integer, String>());
+                //tyPeMet.put(nickName, new ConcurrentHashMap<String, Class<?>>());
 
 //                File file = JCL_ApplicationContext.getContext().getDir("jcl_user", Context.MODE_PRIVATE);
 //                if (!file.isDirectory()) {
@@ -341,10 +350,10 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
 //                        .load(serviceClass.getClassLoader(), new AndroidClassLoadingStrategy(file)).getLoaded();
 //
 //                Class<? extends JCL_execute> cla = (Class<? extends JCL_execute>) cc;
-            cache1.put(nickName, serviceClass.newInstance());
-            nameMap.put(nickName, serviceClass);
+                cache1.put(nickName, serviceClass.newInstance());
+                nameMap.put(nickName,  serviceClass);
 
-            return true;
+                return true;
             //}
 
         } catch (Exception e) {
@@ -354,12 +363,11 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
         }
 
     }
-
     @Override
     public synchronized boolean registerGV(Class<?> gvClass, String nickName) {
         try {
             Log.e("Registrando", gvClass.getName());
-            gvClasses.put(nickName, gvClass);
+            gvClasses.put(nickName,gvClass);
             return true;
             //}
 
@@ -676,14 +684,14 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
                                     Class<?> compareClass = defaultVarValue[i].getClass();
                                     if (aClass.isPrimitive())
                                         aClass = Primitives.wrap(aClass);
-                                    //compareClass= compareClass.getField("TYPE").getDeclaringClass();
+                                        //compareClass= compareClass.getField("TYPE").getDeclaringClass();
                                     //Log.e("name", aClass.getName() + ";" + compareClass.getName());
                                     if (!aClass.equals(compareClass)) {
                                         flag = false;
                                     }
 
                                 }
-                            } else
+                            }else
                                 flag = false;
                             if (flag) {
                                 Object var = c.newInstance(defaultVarValue);
@@ -910,31 +918,31 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
      *
      * }
      */
-    /*
-     * private static void copyJarFile(JarFile jarFile, File destDir) throws
-     * Exception { String fileName = jarFile.getName();
-     *
-     * String fileNameLastPart = "";
-     *
-     * if(fileName.lastIndexOf(File.separator)==-1){ fileNameLastPart =
-     * fileName; }else fileNameLastPart =
-     * fileName.substring(fileName.lastIndexOf(File.separator));
-     *
-     * File destFile = new File(destDir, fileNameLastPart);
-     *
-     * JarOutputStream jos = new JarOutputStream(new
-     * FileOutputStream(destFile)); Enumeration<JarEntry> entries =
-     * jarFile.entries();
-     *
-     * while (entries.hasMoreElements()) { JarEntry entry =
-     * entries.nextElement(); InputStream is = jarFile.getInputStream(entry);
-     *
-     * //jos.putNextEntry(entry); //create a new entry to avoid ZipException:
-     * invalid entry compressed size jos.putNextEntry(new
-     * JarEntry(entry.getName())); byte[] buffer = new byte[4096]; int bytesRead
-     * = is.read(buffer); while (bytesRead!= -1) { jos.write(buffer, 0,
-     * bytesRead); } is.close(); jos.flush(); jos.closeEntry(); } jos.close(); }
-     */
+	/*
+	 * private static void copyJarFile(JarFile jarFile, File destDir) throws
+	 * Exception { String fileName = jarFile.getName();
+	 * 
+	 * String fileNameLastPart = "";
+	 * 
+	 * if(fileName.lastIndexOf(File.separator)==-1){ fileNameLastPart =
+	 * fileName; }else fileNameLastPart =
+	 * fileName.substring(fileName.lastIndexOf(File.separator));
+	 * 
+	 * File destFile = new File(destDir, fileNameLastPart);
+	 * 
+	 * JarOutputStream jos = new JarOutputStream(new
+	 * FileOutputStream(destFile)); Enumeration<JarEntry> entries =
+	 * jarFile.entries();
+	 * 
+	 * while (entries.hasMoreElements()) { JarEntry entry =
+	 * entries.nextElement(); InputStream is = jarFile.getInputStream(entry);
+	 * 
+	 * //jos.putNextEntry(entry); //create a new entry to avoid ZipException:
+	 * invalid entry compressed size jos.putNextEntry(new
+	 * JarEntry(entry.getName())); byte[] buffer = new byte[4096]; int bytesRead
+	 * = is.read(buffer); while (bytesRead!= -1) { jos.write(buffer, 0,
+	 * bytesRead); } is.close(); jos.flush(); jos.closeEntry(); } jos.close(); }
+	 */
     @Override
     public boolean containsTask(String nickName) {
         if (nickName == null)
@@ -1041,10 +1049,10 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
             Log.e("Clean", "Orb");
 
 
-            Log.e("Tamanho Antes", globalVars.size() + "");
+            Log.e("Tamanho Antes", globalVars.size()+"");
             Log.e("Itens Antes", globalVars.toString());
             globalVars.clear();
-            Log.e("Tamanho", globalVars.size() + "");
+            Log.e("Tamanho", globalVars.size()+"");
             Log.e("Itens", globalVars.toString());
             locks.clear();
             nameMap.clear();
@@ -1062,7 +1070,7 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
 
 
     private Object intercept(int index, Object[] arg, Object clas) {
-        if (index == -1)
+        if (index==-1)
             return null;
         try {
             Method myinvocation2 = clas.getClass().getMethods()[index];
@@ -1072,12 +1080,11 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
         return null;
     }
-
     public Map<Long, T> getResults() {
         return results;
     }
@@ -1089,7 +1096,6 @@ public class JCL_orbImpl<T extends JCL_result> implements JCL_orb<T> {
     public static AtomicInteger getRegisterMsg() {
         return RegisterMsg;
     }
-
     public static void setRegisterMsg(AtomicInteger registerMsg) {
         RegisterMsg = registerMsg;
     }

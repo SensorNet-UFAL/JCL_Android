@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import br.ufal.laccan.NoDuplicate;
 import com.hpc.jcl_android.JCL_ANDROID_Facade;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -60,7 +59,7 @@ public class JCL_RecorderPhotoService extends Service implements Runnable,
     public void onDestroy() {
         //thread.stop();
         super.onDestroy();
-        JCL_ANDROID_Facade.getInstance().recorderTimeTest(print, "android-500" + "-" + JCL_Sensor.TypeSensor.TYPE_PHOTO.id + "_" + "4");
+        JCL_ANDROID_Facade.getInstance().recorderTimeTest(print, "android-500"+"-"+JCL_Sensor.TypeSensor.TYPE_PHOTO.id+"_"+"4");
         //JCL_Camera.getInstance(this).release();
 
         JCL_ANDROID_Facade.getInstance().wakeUp("Photo");
@@ -78,7 +77,7 @@ public class JCL_RecorderPhotoService extends Service implements Runnable,
 
         mqttClient = jcl.getMqttClient();
         try {
-            JCL_FacadeImpl.getInstance().instantiateGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id + "_NUMELEMENTS", 0);
+            JCL_FacadeImpl.getInstance().instantiateGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id +"_NUMELEMENTS", 0);
             JCLHashMap<Integer, interfaces.kernel.JCL_Sensor> values = new JCLHashMap<Integer, interfaces.kernel.JCL_Sensor>(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id + "_value");
             int min = 0, max = 0;
             JCL_facade f = JCL_FacadeImpl.getInstance();
@@ -88,7 +87,7 @@ public class JCL_RecorderPhotoService extends Service implements Runnable,
             while (isWorking) {
                 try {
                     if (!jcl.isStandBySen()) {
-                        Log.e("Camera", quant + "");
+                        Log.e("Camera", quant+"");
                         byte[] da = takePicture();
                         if (da != null) {
                             interfaces.kernel.JCL_Sensor s = new JCL_SensorImpl();
@@ -97,19 +96,20 @@ public class JCL_RecorderPhotoService extends Service implements Runnable,
                             s.setDataType("jpeg");
                             //s.showData();
                             //int key = values.keySet().str
-                            NoDuplicate.runAux(max, min, values, jcl, s);
-//                            if (!JCL_FacadeImpl.getInstance().containsGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id + "_NUMELEMENTS")) {
-//                                max = 0;
-//                                min = 0;
-//                                values = new JCLHashMap<Integer, interfaces.kernel.JCL_Sensor>(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id + "_value");
-//                                JCL_FacadeImpl.getInstance().instantiateGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id + "_NUMELEMENTS", "0");
-//                            }
-//                            if ((max - min) > jcl.getSize().get(JCL_Sensor.TypeSensor.TYPE_PHOTO.id)) {
-//                                values.remove(min++);
-//                            }
-//                            values.put(max, s);
-                            sendMqtt(s.getObject(), jcl.getDevice() + "/" + "TYPE_PHOTO");
-                            JCL_FacadeImpl.getInstance().setValueUnlocking(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id + "_NUMELEMENTS", max++);
+                            if (!JCL_FacadeImpl.getInstance().containsGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id +"_NUMELEMENTS")){
+                                max = 0;
+                                min = 0;
+                                values = new JCLHashMap<Integer, interfaces.kernel.JCL_Sensor>(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id + "_value");
+                                JCL_FacadeImpl.getInstance().instantiateGlobalVar(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id +"_NUMELEMENTS", "0");
+                            }
+                            if ((max-min)>jcl.getSize().get(JCL_Sensor.TypeSensor.TYPE_PHOTO.id)){
+                                values.remove(min++);
+                            }
+//                            if (quant < 240) {
+//                                long ini = System.nanoTime();
+                                values.put(max, s);
+                                sendMqtt(s.getObject(), jcl.getDevice()+"/"+ "TYPE_PHOTO");
+                            JCL_FacadeImpl.getInstance().setValueUnlocking(JCL_ANDROID_Facade.getInstance().getDevice() + JCL_Sensor.TypeSensor.TYPE_PHOTO.id +"_NUMELEMENTS",max++);
 //                                print += (TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-ini))+"|"+da.length+" B\n";
 //                                quant++;
 //                            }else{

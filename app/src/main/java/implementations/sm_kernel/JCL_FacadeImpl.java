@@ -78,6 +78,10 @@ public class JCL_FacadeImpl implements JCL_facade {
         return ticket;
     }
 
+    public boolean register(Class<?> serviceClass) {
+        return this.register(serviceClass, serviceClass.getSimpleName());
+    }
+
     //Get num of cores
     protected int coresAutoDetect() {
         return CoresAutodetect.detect();

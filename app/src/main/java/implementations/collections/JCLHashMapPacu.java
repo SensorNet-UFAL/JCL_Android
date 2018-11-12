@@ -288,11 +288,6 @@ public class JCLHashMapPacu<K,V>
     public V remove(Object key) {
         V oldValue = null;
 
-        oldValue = hashMapRemoveDuplcate(key, (V) oldValue);
-        return (oldValue == null ? null : oldValue);
-    }
-
-    private V hashMapRemoveDuplcate(Object key, V oldValue) {
         if (key != null){
             if(DEFAULT_JCL.containsGlobalVar(key.toString()+"¬Map¬"+gvName)){
                 oldValue = (V) DEFAULT_JCL.getValue(key.toString()+"¬Map¬"+gvName).getCorrectResult();
@@ -303,13 +298,22 @@ public class JCLHashMapPacu<K,V>
         }else{
             System.out.println("Can't remove null key!");
         }
-        return oldValue;
+        return (oldValue == null ? null : oldValue);
     }
 
     protected V removeInt(Object key) {
         V oldValue = null;
 
-        oldValue = hashMapRemoveDuplcate(key, (V) oldValue);
+        if (key != null){
+            if(DEFAULT_JCL.containsGlobalVar(key.toString()+"¬Map¬"+gvName)){
+                oldValue = (V) DEFAULT_JCL.getValue(key.toString()+"¬Map¬"+gvName).getCorrectResult();
+            }
+            if (DEFAULT_JCL.deleteGlobalVar(key.toString()+"¬Map¬"+gvName)){
+                super.hashRemove(gvName,key,idLocalize);
+            }
+        }else{
+            System.out.println("Can't remove null key!");
+        }
         return (oldValue == null ? null : oldValue);
     }
 
