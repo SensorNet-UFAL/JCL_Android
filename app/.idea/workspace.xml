@@ -61,8 +61,35 @@
       <file leaf-file-name="JCL_FacadeImpl.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/implementations/sm_kernel/JCL_FacadeImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="918">
-              <caret line="82" column="5" selection-start-line="82" selection-start-column="5" selection-end-line="82" selection-end-column="5" />
+            <state relative-caret-position="137">
+              <caret line="1122" column="5" selection-start-line="1122" selection-start-column="5" selection-end-line="1122" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JCL_task.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_task.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2199">
+              <caret line="131" column="42" selection-start-line="131" selection-start-column="42" selection-end-line="131" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JCL_orb.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_orb.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="6" column="46" selection-start-line="6" selection-start-column="46" selection-end-line="6" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -76,11 +103,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JCL_CPfacade.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="JCL_CPfacade.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_CPfacade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="174" column="36" selection-start-line="174" selection-start-column="36" selection-end-line="174" selection-end-column="36" />
+            <state relative-caret-position="2365">
+              <caret line="176" column="7" lean-forward="true" selection-start-line="176" selection-start-column="7" selection-end-line="176" selection-end-column="7" />
               <folding>
                 <element signature="e#0#62#0" expanded="true" />
               </folding>
@@ -88,11 +115,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JCL_facade.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="JCL_facade.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_facade.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="43">
-              <caret line="427" column="89" selection-start-line="427" selection-start-column="89" selection-end-line="427" selection-end-column="89" />
+            <state relative-caret-position="677">
+              <caret line="338" column="132" selection-start-line="338" selection-start-column="132" selection-end-line="338" selection-end-column="132" />
               <folding>
                 <element signature="e#0#62#0" expanded="true" />
               </folding>
@@ -101,6 +128,15 @@
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>executeond</find>
+      <find>executeall</find>
+      <find>executeallcore</find>
+      <find>regi</find>
+      <find>register</find>
+    </findStrings>
   </component>
   <component name="GradleLocalSettings">
     <option name="projectSyncType">
@@ -114,9 +150,11 @@
       <list>
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/implementations/dm_kernel/user/JCL_FacadeImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/implementations/sm_kernel/JCL_FacadeImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/implementations/dm_kernel/CPuser/JCL_CPFacadeImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_CPfacade.java" />
+        <option value="$PROJECT_DIR$/src/main/java/implementations/sm_kernel/JCL_FacadeImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_task.java" />
+        <option value="$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_orb.java" />
         <option value="$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_facade.java" />
       </list>
     </option>
@@ -165,6 +203,15 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="implementations" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="app" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="implementations" type="462c0819:PsiDirectoryNode" />
+              <item name="sm_kernel" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="app" type="1abcf292:AndroidViewProjectNode" />
@@ -352,13 +399,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/implementations/sm_kernel/JCL_FacadeImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="82" column="5" selection-start-line="82" selection-start-column="5" selection-end-line="82" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/implementations/dm_kernel/CPuser/JCL_CPFacadeImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="342">
@@ -366,20 +406,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_facade.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_CPfacade.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="427" column="89" selection-start-line="427" selection-start-column="89" selection-end-line="427" selection-end-column="89" />
+        <state relative-caret-position="2365">
+          <caret line="176" column="7" lean-forward="true" selection-start-line="176" selection-start-column="7" selection-end-line="176" selection-end-column="7" />
           <folding>
             <element signature="e#0#62#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_CPfacade.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/implementations/sm_kernel/JCL_FacadeImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="174" column="36" selection-start-line="174" selection-start-column="36" selection-end-line="174" selection-end-column="36" />
+        <state relative-caret-position="137">
+          <caret line="1122" column="5" selection-start-line="1122" selection-start-column="5" selection-end-line="1122" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_task.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2199">
+          <caret line="131" column="42" selection-start-line="131" selection-start-column="42" selection-end-line="131" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_orb.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="46" selection-start-line="6" selection-start-column="46" selection-end-line="6" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/interfaces/kernel/JCL_facade.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="677">
+          <caret line="338" column="132" selection-start-line="338" selection-start-column="132" selection-end-line="338" selection-end-column="132" />
           <folding>
             <element signature="e#0#62#0" expanded="true" />
           </folding>
