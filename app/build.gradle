@@ -22,30 +22,30 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility 1.8aq
+        targetCompatibility 1.8
         sourceCompatibility 1.8
     }
 }
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:26.0.0-beta1 '
-    implementation 'com.google.android.gms:play-services-location:9.4.0'
-    implementation 'com.google.guava:guava:18.0'
-    implementation 'com.beust:jcommander:1.48'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.google.android.gms:play-services-location:9.4.0'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.beust:jcommander:1.48'
 
-    implementation 'io.protostuff:protostuff-core:1.6.0'
-    implementation 'io.protostuff:protostuff-api:1.6.0'
-    implementation 'io.protostuff:protostuff-collectionschema:1.6.0'
+    compile 'io.protostuff:protostuff-core:1.6.0'
+    compile 'io.protostuff:protostuff-api:1.6.0'
+    compile 'io.protostuff:protostuff-collectionschema:1.6.0'
 
-    implementation 'io.protostuff:protostuff-runtime:1.6.0'
-    implementation 'com.android.support:design:24.2.1'
+    compile 'io.protostuff:protostuff-runtime:1.6.0'
+    compile 'com.android.support:design:24.2.1'
     compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.1.1'
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation "org.mockito:mockito-core:1.+"
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:1.+"
 
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }

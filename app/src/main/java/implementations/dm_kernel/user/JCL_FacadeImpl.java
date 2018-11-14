@@ -170,7 +170,7 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
             }
 
             //ini jcl lambari
-            jcl.register(JCL_FacadeImplLamb.class, "JCL_FacadeImplLamb");
+            jcl.register(JCL_FacadeImplLamb.class, "JCL_FacadeImplLamb", null);
 
             // scheduler flush in execute
             if (JPF) {
@@ -362,15 +362,31 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
                 jars.put(classToBeExecuted, msg);
                 jarsSlaves.put(classToBeExecuted, new ArrayList<String>());
 
+                if (all) {
+                    //get all host
+                    int[] d = {2, 3, 6, 7};
+                    List<Entry<String, String>> hosts = this.getDevices(d);
+                    //Exec in all host
+                    for (Entry<String, String> host : hosts) {
+                        Map<String, String> hostPort = this.getDeviceMetadata(host);
+                        String ip = hostPort.get("IP");
+                        String port = hostPort.get("PORT");
+                        String mac = hostPort.get("MAC");
+                        String portS = hostPort.get("PORT_SUPER_PEER");
+                        Object[] argsLamD = {ip, port, mac, portS, msg};
+                        Future<JCL_result> tD = jcl.execute("JCL_FacadeImplLamb", "register", argsLamD);
+                        if (((Boolean) tD.get().getCorrectResult())) {
+                            jarsSlaves.get(classToBeExecuted).add(host + port + mac + portS);
+                        } else {
+                            return false;
+                        }
+                    }
+                }
                 return true;
-
             } else {
-
                 return false;
             }
-
         } catch (Exception e) {
-
             System.err
                     .println("problem in JCL facade register(File f, String classToBeExecuted)");
             e.printStackTrace();
