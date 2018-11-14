@@ -293,7 +293,16 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     t.setTaskTime(System.nanoTime());
 
                     t.setHost(str.getSocketAddress());
-                    JCLFuture<JCL_result> ticket = (JCLFuture<JCL_result>) jcl.execute(t);
+
+                    JCLFuture<JCL_result> ticket = null;
+
+                    if (t.getPriority()) {
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
+                        ticket = fTask.get();
+                    } else {
+                        ticket = (JCLFuture) jcl.execute(t);
+                    }
                     JCL_result r = new JCL_resultImpl();
                     r.setCorrectResult(ticket.getTicket());
                     JCL_message_result RESULT = new MessageResultImpl();
@@ -315,14 +324,15 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     JCL_task t = jclT.getTask();
                     t.setTaskTime(System.nanoTime());
                     t.setHost(str.getSocketAddress());
+
                     JCLFuture<JCL_result> ticket = null;
 
-                    if(t.getPriority()){
+                    if (t.getPriority()) {
                         ExecutorService executor = Executors.newSingleThreadExecutor();
-                        Future<JCLFuture<JCL_result>> fTask=executor.submit(new JCL_TaskPriority<JCL_task>(t,orb));
+                        Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
                         ticket = fTask.get();
-                    }else{
-                        ticket = (JCLFuture)jcl.execute(t);
+                    } else {
+                        ticket = (JCLFuture) jcl.execute(t);
                     }
 
                     JCL_result r = new JCL_resultImpl();
@@ -679,8 +689,19 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     for (Entry<Long, JCL_task> inst : binMap.entrySet()) {
                         JCL_task t = inst.getValue();
                         t.setTaskTime(System.nanoTime());
+
                         t.setHost(str.getSocketAddress());
-                        JCLFuture<JCL_result> ticket = (JCLFuture<JCL_result>) jcl.execute(t);
+
+                        JCLFuture<JCL_result> ticket = null;
+
+                        if (t.getPriority()) {
+                            ExecutorService executor = Executors.newSingleThreadExecutor();
+                            Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
+                            ticket = fTask.get();
+                        } else {
+                            ticket = (JCLFuture) jcl.execute(t);
+                        }
+
                         binTicket.put(inst.getKey(), ticket.getTicket());
                     }
 
@@ -974,7 +995,17 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     t.setTaskTime(System.nanoTime());
 
                     t.setHost(str.getSocketAddress());
-                    JCLFuture<JCL_result> ticket = (JCLFuture<JCL_result>) jcl.execute(t);
+
+                    JCLFuture<JCL_result> ticket = null;
+
+                    if(t.getPriority()){
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        Future <JCLFuture<JCL_result>> fTask=executor.submit(new JCL_TaskPriority<JCL_task>(t,orb));
+                        ticket = fTask.get();
+                    }else{
+                        ticket = (JCLFuture)jcl.execute(t);
+                    }
+
                     JCL_result r = new JCL_resultImpl();
                     r.setCorrectResult(ticket.getTicket());
                     JCL_message_result RESULT = new MessageResultImpl();
@@ -996,7 +1027,17 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     JCL_task t = jclT.getTask();
                     t.setTaskTime(System.nanoTime());
                     t.setHost(str.getSocketAddress());
-                    JCLFuture<JCL_result> ticket = (JCLFuture<JCL_result>) jcl.execute(t);
+
+                    JCLFuture<JCL_result> ticket = null;
+
+                    if(t.getPriority()){
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        Future <JCLFuture<JCL_result>> fTask=executor.submit(new JCL_TaskPriority<JCL_task>(t,orb));
+                        ticket = fTask.get();
+                    }else{
+                        ticket = (JCLFuture)jcl.execute(t);
+                    }
+
                     JCL_result r = new JCL_resultImpl();
                     r.setCorrectResult(ticket.getTicket());
                     JCL_message_result RESULT = new MessageResultImpl();
