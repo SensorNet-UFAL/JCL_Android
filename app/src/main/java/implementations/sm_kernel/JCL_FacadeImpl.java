@@ -1,5 +1,14 @@
 package implementations.sm_kernel;
 
+import implementations.collections.JCLFuture;
+import implementations.collections.JCLPFuture;
+import implementations.collections.JCLSFuture;
+import implementations.util.CoresAutodetect;
+import interfaces.kernel.JCL_facade;
+import interfaces.kernel.JCL_orb;
+import interfaces.kernel.JCL_result;
+import interfaces.kernel.JCL_task;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,22 +26,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.ExecuterService;
 
 import commom.Constants;
 import commom.GenericConsumer;
 import commom.GenericResource;
 import commom.JCL_resultImpl;
 import commom.JCL_taskImpl;
-import commom.JCL_TaskPriority;
-import implementations.collections.JCLFuture;
-import implementations.collections.JCLPFuture;
-import implementations.collections.JCLSFuture;
-import implementations.util.CoresAutodetect;
-import interfaces.kernel.JCL_facade;
-import interfaces.kernel.JCL_orb;
-import interfaces.kernel.JCL_result;
-import interfaces.kernel.JCL_task;
 
 public class JCL_FacadeImpl implements JCL_facade {
 
@@ -57,7 +56,6 @@ public class JCL_FacadeImpl implements JCL_facade {
         }
 
         orb.setResults(results);
-        orb.setNumOfTasks(numOfTasks);
         r = re;
 
         try {
@@ -78,10 +76,6 @@ public class JCL_FacadeImpl implements JCL_facade {
         results.put(ticket, jclr);
 
         return ticket;
-    }
-
-    public boolean register(Class<?> serviceClass) {
-        return this.register(serviceClass, serviceClass.getSimpleName());
     }
 
     //Get num of cores
@@ -120,69 +114,11 @@ public class JCL_FacadeImpl implements JCL_facade {
     public Future<JCL_result> execute(Long ticket, String className, String methodName, Object... args) {
         try {
             //create task
-            JCL_task t = new JCL_taskImpl(ticket, className, methodName, false, args);
+            JCL_task t = new JCL_taskImpl(ticket, className, methodName, args);
             JCL_result jclr = new JCL_resultImpl();
             jclr.setTime(t.getTaskTime());
             results.put(ticket, jclr);
             r.putRegister(t);
-
-            return new JCLFuture<JCL_result>(ticket);
-
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute(String className, String methodName, Object... args)");
-            e.printStackTrace();
-            return new JCLSFuture<JCL_result>(null);
-        }
-    }
-
-    public Future<JCL_result> execute(Long ticket, String className, String methodName, boolean priority, Object... args) {
-        try {
-            //create task
-            JCL_task t = new JCL_taskImpl(ticket, className, methodName, priority, args);
-            JCL_result jclr = new JCL_resultImpl();
-            jclr.setTime(t.getTaskTime());
-
-            if (t.getPriority()) {
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
-                ticket = fTask.get().getTicket();
-            } else {
-                results.put(ticket, jclr);
-                r.putRegister(t);
-            }
-
-            return new JCLFuture<JCL_result>(ticket);
-
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute(String className, String methodName,boolean priority, Object... args)");
-            e.printStackTrace();
-            return new JCLSFuture<JCL_result>(null);
-        }
-    }
-
-    //execute with Method name as arg
-    @Override
-    public Future<JCL_result> execute(String className, String methodName, boolean priority, Object... args) {
-
-        //create ticket
-        Long ticket = numOfTasks.getAndIncrement();
-
-        try {
-            //create task
-            JCL_task t = new JCL_taskImpl(ticket, className, methodName, priority, args);
-            JCL_result jclr = new JCL_resultImpl();
-            jclr.setTime(t.getTaskTime());
-
-
-            if (t.getPriority()) {
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
-                ticket = fTask.get().getTicket();
-            } else {
-                results.put(ticket, jclr);
-                r.putRegister(t);
-            }
-
 
             return new JCLFuture<JCL_result>(ticket);
 
@@ -202,69 +138,11 @@ public class JCL_FacadeImpl implements JCL_facade {
 
         try {
             //create task
-            JCL_task t = new JCL_taskImpl(ticket, className, methodName, false, args);
+            JCL_task t = new JCL_taskImpl(ticket, className, methodName, args);
             JCL_result jclr = new JCL_resultImpl();
             jclr.setTime(t.getTaskTime());
             results.put(ticket, jclr);
             r.putRegister(t);
-
-            return new JCLFuture<JCL_result>(ticket);
-
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute(String className, String methodName, Object... args)");
-            e.printStackTrace();
-            return new JCLSFuture<JCL_result>(null);
-        }
-    }
-
-    public Future<JCL_result> execute(Long ticket, String className, String methodName, boolean priority, Object... args) {
-        try {
-            //create task
-            JCL_task t = new JCL_taskImpl(ticket, className, methodName, priority, args);
-            JCL_result jclr = new JCL_resultImpl();
-            jclr.setTime(t.getTaskTime());
-
-            if (t.getPriority()) {
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
-                ticket = fTask.get().getTicket();
-            } else {
-                results.put(ticket, jclr);
-                r.putRegister(t);
-            }
-
-            return new JCLFuture<JCL_result>(ticket);
-
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute(String className, String methodName,boolean priority, Object... args)");
-            e.printStackTrace();
-            return new JCLSFuture<JCL_result>(null);
-        }
-    }
-
-    //execute with Method name as arg
-    @Override
-    public Future<JCL_result> execute(String className, String methodName, boolean priority, Object... args) {
-
-        //create ticket
-        Long ticket = numOfTasks.getAndIncrement();
-
-        try {
-            //create task
-            JCL_task t = new JCL_taskImpl(ticket, className, methodName, priority, args);
-            JCL_result jclr = new JCL_resultImpl();
-            jclr.setTime(t.getTaskTime());
-
-
-            if (t.getPriority()) {
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
-                ticket = fTask.get().getTicket();
-            } else {
-                results.put(ticket, jclr);
-                r.putRegister(t);
-            }
-
 
             return new JCLFuture<JCL_result>(ticket);
 
@@ -299,37 +177,6 @@ public class JCL_FacadeImpl implements JCL_facade {
         }
     }
 
-    @Override
-    public Future<JCL_result> execute(String objectNickname, boolean priority, Object... args) {
-
-        //Create ticket
-        Long ticket = numOfTasks.getAndIncrement();
-
-        try {
-            JCL_task t = new JCL_taskImpl(ticket, objectNickname, priority, args);
-            t.setTaskTime(System.nanoTime());
-            JCL_result jclr = new JCL_resultImpl();
-            jclr.setTime(t.getTaskTime());
-
-
-            if (t.getPriority()) {
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
-                ticket = fTask.get().getTicket();
-            } else {
-                results.put(ticket, jclr);
-                r.putRegister(t);
-            }
-
-
-            return new JCLFuture<JCL_result>(ticket);
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute(String objectNickname, Object... args)");
-            e.printStackTrace();
-            return new JCLSFuture<JCL_result>(null);
-        }
-    }
-
     //execute method execute
     @Override
     public Future<JCL_result> execute(String objectNickname, Object... args) {
@@ -338,7 +185,7 @@ public class JCL_FacadeImpl implements JCL_facade {
         Long ticket = numOfTasks.getAndIncrement();
 
         try {
-            JCL_task t = new JCL_taskImpl(ticket, objectNickname, false, args);
+            JCL_task t = new JCL_taskImpl(ticket, objectNickname, args);
             t.setTaskTime(System.nanoTime());
             JCL_result jclr = new JCL_resultImpl();
             jclr.setTime(t.getTaskTime());
@@ -387,20 +234,6 @@ public class JCL_FacadeImpl implements JCL_facade {
 
     //Register file of jars
     @Override
-    public boolean register(File[] f, String classToBeExecuted, Boolean all) {
-        try {
-            //exec on orb
-            return orb.register(f, classToBeExecuted);
-        } catch (Exception e) {
-
-            System.err.println("problem in JCL facade register(File[] f, String classToBeExecuted)");
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    //Register file of jars
-    @Override
     public boolean register(File[] f, String classToBeExecuted) {
         try {
             //exec on orb
@@ -417,19 +250,6 @@ public class JCL_FacadeImpl implements JCL_facade {
     //Register class
     @Override
     public boolean register(Class<?> serviceClass, String nickName) {
-        try {
-            return orb.register(serviceClass, nickName);
-        } catch (Exception e) {
-            // TODO: handle exception
-            System.err.println("problem in JCL facade register(Class<?> serviceClass,String nickName)");
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    //Register class
-    @Override
-    public boolean register(Class<?> serviceClass, String nickName, Boolean all) {
         try {
             return orb.register(serviceClass, nickName);
         } catch (Exception e) {
@@ -631,58 +451,6 @@ public class JCL_FacadeImpl implements JCL_facade {
         }
     }
 
-    @Override
-    public List<Future<JCL_result>> executeAll(String objectNickname, boolean priority, Object[][] args) {
-        try {
-            List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
-            tickets.add(this.execute(objectNickname, priority, args[0]));
-            return tickets;
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute (String objectNickname, Object... args)");
-            e.printStackTrace();
-            return new ArrayList<Future<JCL_result>>();
-        }
-    }
-
-    //Execute All just Pacu. Lambari execute on localhost
-    @Override
-    @Deprecated
-    public List<Future<JCL_result>> executeAll(String className, String methodName,
-                                               boolean priority, Object... args) {
-        //create ticket
-        try {
-            //create task
-            List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
-            tickets.add(this.execute(className, methodName, priority, args));
-
-            return tickets;
-
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in executeAll(String className, String methodName,Object... args)");
-            e.printStackTrace();
-            return new ArrayList<Future<JCL_result>>();
-        }
-    }
-
-    @Override
-    @Deprecated
-    public List<Future<JCL_result>> executeAll(String objectNickname, boolean priority, Object... args) {
-        //Create ticket
-        Long ticket = numOfTasks.getAndIncrement();
-
-        try {
-            List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
-            tickets.add(this.execute(objectNickname, priority, args));
-
-            return tickets;
-
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in executeAll(String objectNickname, Object... args)");
-            e.printStackTrace();
-            return new ArrayList<Future<JCL_result>>();
-        }
-    }
-
     //Execute All just Pacu. Lambari execute on localhost
     @Override
     @Deprecated
@@ -726,36 +494,6 @@ public class JCL_FacadeImpl implements JCL_facade {
 //			return String.valueOf(-1);
 //		}
 //	}
-
-    @Override
-    @Deprecated
-    public Future<JCL_result> executeOnDevice(Entry<String, String> device, String className,
-                                              String methodName, boolean priority, Object... args) {
-
-        try {
-            return this.execute(className, methodName, priority, args);
-
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in executeOnDevice(Entry<String, String> device, String className,String methodName, Object... args)");
-            e.printStackTrace();
-            return new JCLSFuture<JCL_result>(null);
-        }
-    }
-
-    @Override
-    @Deprecated
-    public Future<JCL_result> executeOnDevice(Entry<String, String> device, String className,
-                                              boolean priority, Object... args) {
-        //Create ticket
-        try {
-            return this.execute(className, priority, args);
-
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in executeOnDevice(Entry<String, String> device, String className,Object... args)");
-            e.printStackTrace();
-            return new JCLSFuture<JCL_result>(null);
-        }
-    }
 
     //Execute OnHost just Pacu. Lambari execute on localhost
     @Override
@@ -1100,87 +838,6 @@ public class JCL_FacadeImpl implements JCL_facade {
         try {
             List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
             tickets.add(this.execute(objectNickname, args[0]));
-            return tickets;
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute (String objectNickname, Object... args)");
-            e.printStackTrace();
-            return new ArrayList<Future<JCL_result>>();
-        }
-    }
-
-    @Override
-    public List<Future<JCL_result>> executeAll(String className, String methodName, boolean priority,
-                                               Object[][] args) {
-        try {
-            List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
-            tickets.add(this.execute(className, methodName, priority, args[0]));
-            return tickets;
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute (String objectNickname, Object... args)");
-            e.printStackTrace();
-            return new ArrayList<Future<JCL_result>>();
-        }
-    }
-
-    @Override
-    public List<Future<JCL_result>> executeAllCores(String objectNickname,
-                                                    String methodName, boolean priority, Object[][] args) {
-        try {
-            List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
-            int core = JCL_Crawler.getCoreNumber();
-            for (int i = 0; i < core; i++) {
-                tickets.add(this.execute(objectNickname, methodName, priority, args[i]));
-            }
-            return tickets;
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute (String objectNickname, Object... args)");
-            e.printStackTrace();
-            return new ArrayList<Future<JCL_result>>();
-        }
-    }
-
-    @Override
-    public List<Future<JCL_result>> executeAllCores(String objectNickname, boolean priority, Object[][] args) {
-        try {
-            List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
-            int core = JCL_Crawler.getCoreNumber();
-            for (int i = 0; i < core; i++) {
-                tickets.add(this.execute(objectNickname, priority, args[i]));
-            }
-            return tickets;
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute (String objectNickname, Object... args)");
-            e.printStackTrace();
-            return new ArrayList<Future<JCL_result>>();
-        }
-    }
-
-    @Override
-    public List<Future<JCL_result>> executeAllCores(String objectNickname, boolean priority, Object... args) {
-        try {
-            List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
-            int core = JCL_Crawler.getCoreNumber();
-            for (int i = 0; i < core; i++) {
-                tickets.add(this.execute(objectNickname, priority, args));
-            }
-            return tickets;
-        } catch (Exception e) {
-            System.err.println("JCL facade problem in execute (String objectNickname, Object... args)");
-            e.printStackTrace();
-            return new ArrayList<Future<JCL_result>>();
-        }
-    }
-
-    @Override
-    public List<Future<JCL_result>> executeAllCores(String objectNickname,
-                                                    String methodName, boolean priority, Object... args) {
-        try {
-            List<Future<JCL_result>> tickets = new ArrayList<Future<JCL_result>>();
-            int core = JCL_Crawler.getCoreNumber();
-
-            for (int i = 0; i < core; i++) {
-                tickets.add(this.execute(objectNickname, methodName, priority, args));
-            }
             return tickets;
         } catch (Exception e) {
             System.err.println("JCL facade problem in execute (String objectNickname, Object... args)");

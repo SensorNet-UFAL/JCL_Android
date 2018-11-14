@@ -6,12 +6,42 @@ import android.util.Log;
 
 import com.google.common.primitives.Primitives;
 import com.hpc.jcl_android.JCL_ANDROID_Facade;
-//import com.hpc.jcl_android.SuperContext;
-
-//import net.bytebuddy.implementation.bind.annotation.Super;
 
 import org.jf.dexlib2.DexFileFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
+
+import commom.GenericConsumer;
+import commom.GenericResource;
+import commom.JCL_TaskPriority;
+import commom.JCL_handler;
+import commom.JCL_resultImpl;
 import commom.JCL_taskImpl;
 import dalvik.system.DexClassLoader;
 import implementations.collections.JCLFuture;
@@ -26,7 +56,9 @@ import implementations.dm_kernel.MessageSensorImpl;
 import implementations.dm_kernel.MessageTaskImpl;
 import implementations.sm_kernel.JCL_FacadeImpl;
 import implementations.sm_kernel.JCL_orbImpl;
+import implementations.util.ByteBuffer;
 import implementations.util.JCL_ApplicationContext;
+import implementations.util.JarDexFile;
 import implementations.util.ObjectWrap;
 import interfaces.kernel.JCL_message;
 import interfaces.kernel.JCL_message_bool;
@@ -45,45 +77,16 @@ import interfaces.kernel.JCL_message_task;
 import interfaces.kernel.JCL_orb;
 import interfaces.kernel.JCL_result;
 import interfaces.kernel.JCL_task;
-import commom.JCL_handler;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import implementations.util.ByteBuffer;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
-
-//import javassist.ClassPool;
-//import javassist.CtClass;
-import commom.GenericConsumer;
-import commom.GenericResource;
-import commom.JCL_resultImpl;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtobufIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
 import javassist.android.DexFile;
-import implementations.util.JarDexFile;
+
+//import com.hpc.jcl_android.SuperContext;
+//import net.bytebuddy.implementation.bind.annotation.Super;
+//import javassist.ClassPool;
+//import javassist.CtClass;
 
 
 // exemplo de um consumidor !!!
@@ -312,7 +315,16 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     JCL_task t = jclT.getTask();
                     t.setTaskTime(System.nanoTime());
                     t.setHost(str.getSocketAddress());
-                    JCLFuture<JCL_result> ticket = (JCLFuture<JCL_result>) jcl.execute(t);
+                    JCLFuture<JCL_result> ticket = null;
+
+                    if(t.getPriority()){
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        Future<JCLFuture<JCL_result>> fTask=executor.submit(new JCL_TaskPriority<JCL_task>(t,orb));
+                        ticket = fTask.get();
+                    }else{
+                        ticket = (JCLFuture)jcl.execute(t);
+                    }
+
                     JCL_result r = new JCL_resultImpl();
                     r.setCorrectResult(ticket.getTicket());
                     JCL_message_result RESULT = new MessageResultImpl();
@@ -579,7 +591,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                         }
 
                         // Write data
-                        super.WriteObjectOnSock(RESULT,(byte[])jclR, str,false);
+                        super.WriteObjectOnSock(RESULT, (byte[]) jclR, str, false);
                         // End Write data
 
                     } else {
@@ -685,18 +697,18 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     break;
                 }
 
-				/*
+                /*
                  * case 26:{ JCL_message_generic jclC =
-				 * (JCL_message_generic)msg; JCL_result jclR =
-				 * orb.getValueLocking(jclC.getRegisterData());
-				 * JCL_message_result RESULT = new MessageResultImpl();
-				 * RESULT.setType(26); RESULT.setResult(jclR);
-				 *
-				 * //Write data super.WriteObjectOnSock(RESULT, str); //End
-				 * Write data
-				 *
-				 * break; }
-				 */
+                 * (JCL_message_generic)msg; JCL_result jclR =
+                 * orb.getValueLocking(jclC.getRegisterData());
+                 * JCL_message_result RESULT = new MessageResultImpl();
+                 * RESULT.setType(26); RESULT.setResult(jclR);
+                 *
+                 * //Write data super.WriteObjectOnSock(RESULT, str); //End
+                 * Write data
+                 *
+                 * break; }
+                 */
                 // instantiateGlobalVarAndReg() type 27
                 case 27: {
                     // Register Jars
