@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
+        "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+    }
+]

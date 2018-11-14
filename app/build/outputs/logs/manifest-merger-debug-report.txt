@@ -1,0 +1,191 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:2:1-83:12
+	package
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:2:70-99
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:4:5-80
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:4:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:5:5-81
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:5:22-78
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:6:5-71
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:6:22-68
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:7:5-79
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:7:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:8:5-81
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:8:22-78
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:9:5-76
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:9:22-73
+uses-permission#android.permission.CAMERA
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:10:5-65
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:10:22-62
+uses-feature#android.hardware.camera
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:11:5-60
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:11:19-57
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:12:5-79
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:12:22-76
+uses-permission#android.permission.INTERNET
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:13:5-67
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:13:22-64
+uses-permission#android.permission.WAKE_LOCK
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:14:5-68
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:14:22-65
+application
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:18:5-81:19
+MERGED from [com.google.android.gms:play-services-location:9.4.0] /home/matheus/.android/build-cache/38ab5974205c122ac9792b3a23dc244a43e15834/output/AndroidManifest.xml:19:5-20
+MERGED from [com.google.android.gms:play-services-base:9.4.0] /home/matheus/.android/build-cache/7a68f27f95a2c53f4bea067226d5f670159958f7/output/AndroidManifest.xml:19:5-23:19
+MERGED from [com.google.android.gms:play-services-tasks:9.4.0] /home/matheus/.android/build-cache/c7f9154104c48212245e3aef64d87c802452d92e/output/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-basement:9.4.0] /home/matheus/.android/build-cache/89ad484c57241f5721fefdf28f2eb242acef7294/output/AndroidManifest.xml:20:5-24:19
+MERGED from [com.android.support:design:24.2.1] /home/matheus/.android/build-cache/9c361a3c69093c8375916370257843b5b69f9353/output/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:24.2.1] /home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-v4:24.2.1] /home/matheus/.android/build-cache/98f509207dfaf073c4280fb5772653df750d65e7/output/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-fragment:24.2.1] /home/matheus/.android/build-cache/05470a3b51fd87a4e9a98c4344019f4f2bdb0a4f/output/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-media-compat:24.2.1] /home/matheus/.android/build-cache/4f284192a9cf37874a73714df40cea081a887e38/output/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-core-utils:24.2.1] /home/matheus/.android/build-cache/ff7bf90dd8a7ee3c332d51cc80eeb2c34874a7af/output/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:animated-vector-drawable:24.2.1] /home/matheus/.android/build-cache/ce3fcae74bf169518ed358081c9ad60de163ead4/output/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-vector-drawable:24.2.1] /home/matheus/.android/build-cache/1089957d468ad72621e45ae11206ed4e4a4de624/output/AndroidManifest.xml:23:5-20
+MERGED from [com.android.support:support-core-ui:24.2.1] /home/matheus/.android/build-cache/5c42e6019ce0c3ed5cb60dce61e1e59da4979c42/output/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-compat:24.2.1] /home/matheus/.android/build-cache/4735795b4e46a7bcbfcf0361693ae0b04e97b00c/output/AndroidManifest.xml:25:5-20
+	android:label
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:19:9-41
+	android:supportsRtl
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:19:42-68
+	android:allowBackup
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:18:18-44
+	android:icon
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:18:45-79
+	android:theme
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:19:69-100
+meta-data#com.google.android.gms.version
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:20:9-21:69
+MERGED from [com.google.android.gms:play-services-basement:9.4.0] /home/matheus/.android/build-cache/89ad484c57241f5721fefdf28f2eb242acef7294/output/AndroidManifest.xml:21:9-23:69
+	android:value
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:21:13-66
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:20:20-65
+activity#com.hpc.jcl_android.MainActivity
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:23:9-32:20
+	android:label
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:26:13-45
+	android:noHistory
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:25:13-38
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:24:13-60
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:27:13-31:29
+action#android.intent.action.MAIN
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:28:17-69
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:28:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:30:17-77
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:30:27-74
+service#services.JCL_RecorderAudioService
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:33:9-41:19
+	android:label
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:35:13-53
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:34:13-61
+intent-filter#INICIAR_SERVER+android.intent.category.DEFAULT
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:36:13-40:29
+action#INICIAR_SERVER
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:37:17-57
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:37:25-54
+category#android.intent.category.DEFAULT
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:39:17-76
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:39:27-73
+service#services.JCL_HostService
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:42:9-50:19
+	android:label
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:44:13-44
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:43:13-52
+service#services.JCL_RecorderPhotoService
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:52:9-60:19
+	android:label
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:54:13-53
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:53:13-61
+service#services.JCL_NativeSensorService
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:61:9-69:19
+	android:label
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:63:13-52
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:62:13-60
+receiver#broadcasts.ReceiverActionNotification
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:70:9-79:20
+	android:label
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:72:13-55
+	android:permission
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:73:13-69
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:71:13-65
+intent-filter#NOTIFICATION+android.intent.category.DEFAULT
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:74:13-78:29
+action#NOTIFICATION
+ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:75:17-55
+	android:name
+		ADDED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml:75:25-52
+uses-sdk
+INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.google.android.gms:play-services-location:9.4.0] /home/matheus/.android/build-cache/38ab5974205c122ac9792b3a23dc244a43e15834/output/AndroidManifest.xml:18:5-42
+MERGED from [com.google.android.gms:play-services-base:9.4.0] /home/matheus/.android/build-cache/7a68f27f95a2c53f4bea067226d5f670159958f7/output/AndroidManifest.xml:18:5-42
+MERGED from [com.google.android.gms:play-services-tasks:9.4.0] /home/matheus/.android/build-cache/c7f9154104c48212245e3aef64d87c802452d92e/output/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-basement:9.4.0] /home/matheus/.android/build-cache/89ad484c57241f5721fefdf28f2eb242acef7294/output/AndroidManifest.xml:18:5-42
+MERGED from [com.android.support:design:24.2.1] /home/matheus/.android/build-cache/9c361a3c69093c8375916370257843b5b69f9353/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:24.2.1] /home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:24.2.1] /home/matheus/.android/build-cache/98f509207dfaf073c4280fb5772653df750d65e7/output/AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:24.2.1] /home/matheus/.android/build-cache/05470a3b51fd87a4e9a98c4344019f4f2bdb0a4f/output/AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:24.2.1] /home/matheus/.android/build-cache/4f284192a9cf37874a73714df40cea081a887e38/output/AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-utils:24.2.1] /home/matheus/.android/build-cache/ff7bf90dd8a7ee3c332d51cc80eeb2c34874a7af/output/AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:24.2.1] /home/matheus/.android/build-cache/ce3fcae74bf169518ed358081c9ad60de163ead4/output/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:24.2.1] /home/matheus/.android/build-cache/1089957d468ad72621e45ae11206ed4e4a4de624/output/AndroidManifest.xml:21:5-43
+MERGED from [com.android.support:recyclerview-v7:24.2.1] /home/matheus/.android/build-cache/6a85fd003cdb72ab2a27cbadc9629c5f222de50f/output/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-core-ui:24.2.1] /home/matheus/.android/build-cache/5c42e6019ce0c3ed5cb60dce61e1e59da4979c42/output/AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:24.2.1] /home/matheus/.android/build-cache/4735795b4e46a7bcbfcf0361693ae0b04e97b00c/output/AndroidManifest.xml:21:5-23:58
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:24.2.1] /home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+		INJECTED from /home/matheus/JCL_Android/app/src/main/AndroidManifest.xml
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:9.4.0] /home/matheus/.android/build-cache/7a68f27f95a2c53f4bea067226d5f670159958f7/output/AndroidManifest.xml:20:9-22:45
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:9.4.0] /home/matheus/.android/build-cache/7a68f27f95a2c53f4bea067226d5f670159958f7/output/AndroidManifest.xml:22:19-43
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:9.4.0] /home/matheus/.android/build-cache/7a68f27f95a2c53f4bea067226d5f670159958f7/output/AndroidManifest.xml:21:19-78
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:9.4.0] /home/matheus/.android/build-cache/7a68f27f95a2c53f4bea067226d5f670159958f7/output/AndroidManifest.xml:20:19-85

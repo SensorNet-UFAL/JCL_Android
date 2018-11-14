@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/res/drawable-v21/abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/drawable-v21/abc_edit_text_material.xml",
+        "source": "/home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/res/drawable-v21/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/res/drawable-v21/abc_btn_colored_material.xml"
+    }
+]
