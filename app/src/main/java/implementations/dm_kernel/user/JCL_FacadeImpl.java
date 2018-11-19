@@ -909,18 +909,18 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
 
     @Override
     public List<Future<JCL_result>> executeAllCores(String objectNickname, Object... args) {
+        return executeAllCores(objectNickname, false, args);
+    }
+
+    @Override
+    public List<Future<JCL_result>> executeAllCores(String objectNickname, boolean priority, Object... args) {
         List<Future<JCL_result>> tickets;
         List<Entry<String, String>> hosts;
         tickets = new ArrayList<Future<JCL_result>>();
         try {
-
-            //get all host
             //get all host
             int[] d = {2, 3, 6, 7};
             hosts = this.getDevices(d);
-
-            //		hosts = this.getAllDevicesCores();
-
 
             //Exec in all host
             for (int i = 0; i < hosts.size(); i++) {
@@ -928,10 +928,9 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
                 Entry<String, String> device = hosts.get(i);
                 int core = this.getDeviceCore(device);
                 for (int j = 0; j < core; j++) {
-                    tickets.add(this.executeOnDevice(device, objectNickname, args));
+                    tickets.add(this.executeOnDevice(device, objectNickname, priority, args));
                 }
             }
-
             return tickets;
         } catch (Exception e) {
             System.err
@@ -942,29 +941,27 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
 
     @Override
     public List<Future<JCL_result>> executeAllCores(String objectNickname, String methodName, Object... args) {
+        return executeAllCores(objectNickname, methodName, false, args);
+    }
+
+    @Override
+    public List<Future<JCL_result>> executeAllCores(String objectNickname, String methodName, boolean priority, Object... args) {
         List<Future<JCL_result>> tickets;
         List<Entry<String, String>> hosts;
         tickets = new ArrayList<Future<JCL_result>>();
         try {
-
-            //get all host
             //get all host
             int[] d = {2, 3, 6, 7};
             hosts = this.getDevices(d);
-
-            //		hosts = this.getAllDevicesCores();
-
-
             //Exec in all host
             for (int i = 0; i < hosts.size(); i++) {
                 //Execute o same host all cores
                 Entry<String, String> device = hosts.get(i);
                 int core = this.getDeviceCore(device);
                 for (int j = 0; j < core; j++) {
-                    tickets.add(this.executeOnDevice(device, objectNickname, methodName, args));
+                    tickets.add(this.executeOnDevice(device, objectNickname, methodName, priority, args));
                 }
             }
-
             return tickets;
         } catch (Exception e) {
             System.err
@@ -975,12 +972,15 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
 
     @Override
     public List<Future<JCL_result>> executeAllCores(String objectNickname, String methodName, Object[][] args) {
+        return executeAllCores(objectNickname, methodName, false, args);
+    }
+
+    @Override
+    public List<Future<JCL_result>> executeAllCores(String objectNickname, String methodName, boolean priority, Object[][] args) {
         List<Future<JCL_result>> tickets;
         List<Entry<String, String>> hosts;
         tickets = new ArrayList<Future<JCL_result>>();
         try {
-
-            //get all host
             //get all host
             int[] d = {2, 3, 6, 7};
             hosts = this.getDevices(d);
@@ -992,7 +992,7 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
                 Entry<String, String> device = hosts.get(i);
                 int core = this.getDeviceCore(device);
                 for (int j = 0; j < core; j++) {
-                    tickets.add(this.executeOnDevice(device, objectNickname, methodName, args[cont]));
+                    tickets.add(this.executeOnDevice(device, objectNickname, methodName, priority, args[cont]));
                     ++cont;
                 }
             }
@@ -1007,16 +1007,18 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
 
     @Override
     public List<Future<JCL_result>> executeAllCores(String objectNickname, Object[][] args) {
+        return executeAllCores(objectNickname, false, args);
+    }
+
+    @Override
+    public List<Future<JCL_result>> executeAllCores(String objectNickname, boolean priority, Object[][] args) {
         List<Future<JCL_result>> tickets;
         List<Entry<String, String>> hosts;
         tickets = new ArrayList<Future<JCL_result>>();
         try {
-
-            //get all host
             //get all host
             int[] d = {2, 3, 6, 7};
             hosts = this.getDevices(d);
-
             //Exec in all host
             int cont = 0;
             for (int i = 0; i < hosts.size(); i++) {
@@ -1024,7 +1026,7 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
                 Entry<String, String> device = hosts.get(i);
                 int core = this.getDeviceCore(device);
                 for (int j = 0; j < core; j++) {
-                    tickets.add(this.executeOnDevice(device, objectNickname, args[cont]));
+                    tickets.add(this.executeOnDevice(device, objectNickname, priority, args[cont]));
                     ++cont;
                 }
             }

@@ -153,14 +153,6 @@ public class MainHost extends Server {
     @Override
     protected void beforeListening() {
 
-
-        // Read properties file.
-//		final Properties properties = new Properties();
-//		try {
-//		    properties.load(new FileInputStream("../jcl_conf/config.properties"));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
         JCL_ANDROID_Facade jcl = JCL_ANDROID_Facade.getInstance();
         try {
             final String serverIpPort[];
