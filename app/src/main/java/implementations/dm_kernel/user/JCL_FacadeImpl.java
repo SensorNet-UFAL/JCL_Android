@@ -1042,7 +1042,12 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
     @Override
     public Future<JCL_result> executeOnDevice(Entry<String, String> device, String objectNickname,
                                               Object... args) {
+        return executeOnDevice(device, objectNickname, false, args);
+    }
 
+    @Override
+    public Future<JCL_result> executeOnDevice(Entry<String, String> device, String objectNickname,
+                                              boolean priority, Object... args) {
         try {
 
             //Get host
@@ -1084,13 +1089,12 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
             //Test if host contain jar
             if (jarsSlaves.get(objectNickname).contains(host + port + mac + portS)) {
                 //Just exec
-                Object[] argsLam = {objectNickname, host, port, mac, portS, new Boolean(false), args};
+                Object[] argsLam = {objectNickname, host, port, mac, portS, Boolean.FALSE, priority, args};
                 Future<JCL_result> ticket = super.execute("JCL_FacadeImplLamb", "execute", argsLam);
                 return ticket;
             } else {
-
                 //Exec and register
-                Object[] argsLam = {objectNickname, host, port, mac, portS, jars.get(objectNickname), new Boolean(false), args};
+                Object[] argsLam = {objectNickname, host, port, mac, portS, jars.get(objectNickname), Boolean.FALSE, priority, args};
                 Future<JCL_result> ticket = super.execute("JCL_FacadeImplLamb", "executeAndRegister", argsLam);
                 //ticket.get();
                 jarsSlaves.get(objectNickname).add(host + port + mac + portS);
@@ -1150,9 +1154,14 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
     @Override
     public Future<JCL_result> executeOnDevice(Entry<String, String> device, String objectNickname,
                                               String methodName, Object... args) {
+        return executeOnDevice(device, objectNickname, methodName, false, args);
+    }
+
+    @Override
+    public Future<JCL_result> executeOnDevice(Entry<String, String> device, String objectNickname,
+                                              String methodName, boolean priority, Object... args) {
         try {
             String host = null, port = null, mac = null, portS = null;
-
             if (jars.containsKey(objectNickname)) {
                 // Get host
 
@@ -1189,13 +1198,11 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
             //Test if host contain jar
             if (jarsSlaves.get(objectNickname).contains(host + port + mac + portS)) {
                 //Just exec
-                Object[] argsLam = {objectNickname, methodName, host, port, mac, portS, new Boolean(false), args};
-                Future<JCL_result> ticket = super.execute("JCL_FacadeImplLamb", "execute", argsLam);
-                return ticket;
+                Object[] argsLam = {objectNickname, methodName, host, port, mac, portS, new Boolean(false), priority, args};
+                return super.execute("JCL_FacadeImplLamb", "execute", argsLam);
             } else {
-
                 //Exec and register
-                Object[] argsLam = {objectNickname, methodName, host, port, mac, portS, jars.get(objectNickname), new Boolean(false), args};
+                Object[] argsLam = {objectNickname, methodName, host, port, mac, portS, jars.get(objectNickname), new Boolean(false), priority, args};
                 Future<JCL_result> ticket = super.execute("JCL_FacadeImplLamb", "executeAndRegister", argsLam);
                 //ticket.get();
                 jarsSlaves.get(objectNickname).add(host + port + mac + portS);
@@ -2630,6 +2637,30 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
                 // TODO Auto-generated catch block
                 e.printStackTrace();
                 return null;
+            }
+        }
+
+        protected JCL_result getResultUnBlockingP(Long ID) {
+            try {
+                JCL_result result, resultF;
+                //Using lambari to get result
+                result = super.getResultBlocking(ID);
+                Object[] res = (Object[]) result.getCorrectResult();
+                Object[] arg = {(ID), res[0], res[1], res[2], res[3], res[4]};
+                Future<JCL_result> ticket = jcl.execute("JCL_FacadeImplLamb", "getResultUnblocking", arg);
+                resultF = ticket.get();
+
+
+                if (resultF.getCorrectResult().equals("NULL")) {
+                    resultF.setCorrectResult(null);
+                }
+                return resultF;
+            } catch (Exception e) {
+                System.err
+                        .println("problem in JCL facade getResultUnBlocking(String ID)");
+                JCL_result jclr = new JCL_resultImpl();
+                jclr.setErrorResult(e);
+                return jclr;
             }
         }
 
