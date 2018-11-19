@@ -1,6 +1,7 @@
 #Library properties
-#Wed Nov 14 11:41:21 BRT 2018
+#Mon Nov 19 15:09:11 BRT 2018
 lib.version.major=3
+jayce.version.minor=4
 config.jack.optimization.expression-simplifier=true
 config.jack.obfuscation.nameprovider=lower-case
 config.jack.optimization.remove-unused-non-synthetic-definition=false
@@ -72,4 +73,5 @@ config.jack.dex.forcejumbo=true
 config.jack.optimization.inner-class.accessors=false
 config.jack.annotation.parameter.class-retention=true
 config.jack.obfuscation.flattenpackage=false
+jayce.version.major=4
 config.jack.shrob.obfuscate=false

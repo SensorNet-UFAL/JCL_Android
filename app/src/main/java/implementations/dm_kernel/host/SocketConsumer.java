@@ -160,11 +160,11 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
         Class<URLClassLoader> clazz = URLClassLoader.class;
 
 //
-//        // Use reflection
-        Method method = clazz.getDeclaredMethod("addURL", new Class[]{URL.class});
+//      // Use reflection
+        Method method = clazz.getDeclaredMethod("addURL", URL.class);
         method.setAccessible(true);
         //
-        method.invoke(classLoader, new Object[]{url});
+        method.invoke(classLoader, url);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                             fout0.mkdirs();
                         JarDexFile d = new JarDexFile();
                         System.err.println("Registering Class Name: " + msgR.getClassName());
-                        Boolean b = new Boolean(orb.register(d.loadingClassOnAndroid(msgR, msgR.getClassName()), msgR.getClassName()));
+                        Boolean b = orb.register(d.loadingClassOnAndroid(msgR, msgR.getClassName()), msgR.getClassName());
                         JCL_result r = new JCL_resultImpl();
                         r.setCorrectResult(b);
 
@@ -198,7 +198,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                         RESULT.setResult(r);
 
                         // Write data
-                        str.RegisterMsg.decrementAndGet();
+                        JCL_handler.RegisterMsg.decrementAndGet();
                         super.WriteObjectOnSock(RESULT, str, false);
                         // End Write data
 
@@ -214,7 +214,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                         RESULT.setResult(r);
 
                         // Write data
-                        str.RegisterMsg.decrementAndGet();
+                        JCL_handler.RegisterMsg.decrementAndGet();
                         super.WriteObjectOnSock(RESULT, str, false);
                         // End Write data
                     }
@@ -254,13 +254,13 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     //CtClass cc = cp.makeClass(myInputStream);
                     System.err.println("Registering Class Name: " + msgR.getClassName());
                     //Boolean b = new Boolean(orb.register(loadingClassOnAndroid(by,name), msgR.getClassName()));
-                    Boolean b = new Boolean(orb.register(loadingClassOnAndroid(by, name), msgR.getClassName()));
+                    Boolean b = orb.register(loadingClassOnAndroid(by, name), msgR.getClassName());
                     JCL_result r = new JCL_resultImpl();
                     r.setCorrectResult(b);
                     JCL_message_result RESULT = new MessageResultImpl();
                     RESULT.setType(1);
                     RESULT.setResult(r);
-                    str.RegisterMsg.decrementAndGet();
+                    JCL_handler.RegisterMsg.decrementAndGet();
                     // Write data
                     super.WriteObjectOnSock(RESULT, str, false);
                     // End Write data
@@ -300,6 +300,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                         ExecutorService executor = Executors.newSingleThreadExecutor();
                         Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
                         ticket = fTask.get();
+                        executor.shutdownNow();
                     } else {
                         ticket = (JCLFuture) jcl.execute(t);
                     }
@@ -331,6 +332,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                         ExecutorService executor = Executors.newSingleThreadExecutor();
                         Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
                         ticket = fTask.get();
+                        executor.shutdownNow();
                     } else {
                         ticket = (JCLFuture) jcl.execute(t);
                     }
@@ -646,7 +648,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                     // isLock(id) type: 20
                     JCL_message_generic jclGV = (JCL_message_generic) msg;
                     JCL_result jclR = new JCL_resultImpl();
-                    jclR.setCorrectResult(new Boolean(orb.isLock(ByteBuffer.wrap((byte[]) jclGV.getRegisterData()))));
+                    jclR.setCorrectResult(orb.isLock(ByteBuffer.wrap((byte[]) jclGV.getRegisterData())));
 
                     JCL_message_result RESULT = new MessageResultImpl();
                     RESULT.setType(20);
@@ -663,7 +665,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
 
                     // cleanEnvironment() type 22
                     JCL_result jclR = new JCL_resultImpl();
-                    jclR.setCorrectResult(new Boolean(orb.cleanEnvironment()));
+                    jclR.setCorrectResult(orb.cleanEnvironment());
                     JCL_message_result RESULT = new MessageResultImpl();
                     RESULT.setType(22);
                     RESULT.setResult(jclR);
@@ -698,6 +700,7 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
                             ExecutorService executor = Executors.newSingleThreadExecutor();
                             Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
                             ticket = fTask.get();
+                            executor.shutdownNow();
                         } else {
                             ticket = (JCLFuture) jcl.execute(t);
                         }
@@ -998,12 +1001,13 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
 
                     JCLFuture<JCL_result> ticket = null;
 
-                    if(t.getPriority()){
+                    if (t.getPriority()) {
                         ExecutorService executor = Executors.newSingleThreadExecutor();
-                        Future <JCLFuture<JCL_result>> fTask=executor.submit(new JCL_TaskPriority<JCL_task>(t,orb));
+                        Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
                         ticket = fTask.get();
-                    }else{
-                        ticket = (JCLFuture)jcl.execute(t);
+                        executor.shutdownNow();
+                    } else {
+                        ticket = (JCLFuture) jcl.execute(t);
                     }
 
                     JCL_result r = new JCL_resultImpl();
@@ -1030,12 +1034,13 @@ public class SocketConsumer<S extends JCL_handler> extends GenericConsumer<S> {
 
                     JCLFuture<JCL_result> ticket = null;
 
-                    if(t.getPriority()){
+                    if (t.getPriority()) {
                         ExecutorService executor = Executors.newSingleThreadExecutor();
-                        Future <JCLFuture<JCL_result>> fTask=executor.submit(new JCL_TaskPriority<JCL_task>(t,orb));
+                        Future<JCLFuture<JCL_result>> fTask = executor.submit(new JCL_TaskPriority<JCL_task>(t, orb));
                         ticket = fTask.get();
-                    }else{
-                        ticket = (JCLFuture)jcl.execute(t);
+                        executor.shutdownNow();
+                    } else {
+                        ticket = (JCLFuture) jcl.execute(t);
                     }
 
                     JCL_result r = new JCL_resultImpl();

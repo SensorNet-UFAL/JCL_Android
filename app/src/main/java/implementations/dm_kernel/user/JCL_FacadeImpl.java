@@ -647,7 +647,6 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
                 //watch this method
                 watchExecMeth = false;
                 //Create bin task message
-                JCL_task t = new JCL_taskImpl(null, objectNickname, args);
                 JCL_task t = new JCL_taskImpl(null, objectNickname, false, args);
                 Long ticket = super.createTicketH();
                 t.setPort(this.port);
