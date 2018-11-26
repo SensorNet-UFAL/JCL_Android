@@ -352,6 +352,10 @@ public class JCL_FacadeImpl implements JCL_facade {
         }
     }
 
+    public boolean register(Class<?> serviceClass) {
+        return this.register(serviceClass, serviceClass.getSimpleName());
+    }
+
     //Register class
     @Override
     public boolean register(Class<?> serviceClass, String nickName) {

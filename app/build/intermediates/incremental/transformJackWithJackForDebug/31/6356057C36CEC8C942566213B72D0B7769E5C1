@@ -1,5 +1,5 @@
 #Library properties
-#Mon Nov 19 15:09:11 BRT 2018
+#Mon Nov 26 11:23:40 BRT 2018
 lib.version.major=3
 jayce.version.minor=4
 config.jack.optimization.expression-simplifier=true
@@ -14,8 +14,8 @@ config.jack.optimization.not-simplifier=true
 config.jack.lambda.anonymous=true
 jayce=true
 config.jack.optimization.def-use-simplifier=true
-config.jack.transformation.reusesyncvariable=true
 config.jack.import.jar.tolerant=false
+config.jack.transformation.reusesyncvariable=true
 config.jack.optimization.use-def-simplifier=true
 config.jack.obfuscation.packagedictionary=false
 config.jack.obfuscation.classdictionary=false

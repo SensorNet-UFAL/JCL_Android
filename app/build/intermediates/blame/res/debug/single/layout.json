@@ -60,12 +60,12 @@
         "source": "/home/matheus/.android/build-cache/9c361a3c69093c8375916370257843b5b69f9353/output/res/layout/design_navigation_menu.xml"
     },
     {
-        "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_button_bar_material.xml",
-        "source": "/home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/res/layout/abc_alert_dialog_button_bar_material.xml"
-    },
-    {
         "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/layout/select_dialog_singlechoice_material.xml",
         "source": "/home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/res/layout/select_dialog_singlechoice_material.xml"
+    },
+    {
+        "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_button_bar_material.xml",
+        "source": "/home/matheus/.android/build-cache/56242adcbdf7cc68cf136f27f2fa9392c38a065e/output/res/layout/abc_alert_dialog_button_bar_material.xml"
     },
     {
         "merged": "/home/matheus/JCL_Android/app/build/intermediates/res/merged/debug/layout/design_layout_tab_icon.xml",

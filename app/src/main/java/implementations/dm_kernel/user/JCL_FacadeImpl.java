@@ -432,6 +432,12 @@ public class JCL_FacadeImpl extends implementations.sm_kernel.JCL_FacadeImpl.Hol
 
     //Register just class
     @Override
+    public boolean register(Class<?> serviceClass) {
+        return this.register(serviceClass, serviceClass.getSimpleName());
+    }
+
+    //Register just class
+    @Override
     public boolean register(Class<?> serviceClass, String classToBeExecuted,
                             Boolean all) {
         byte[] dex = null;
